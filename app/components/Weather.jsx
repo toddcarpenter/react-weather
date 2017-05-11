@@ -1,9 +1,16 @@
 var React = require('react');
 
+var WeatherForm = require('WeatherForm');
+var WeatherOutput = require('WeatherOutput');
+
 var Weather = React.createClass({
     render: function() {
         return (
-            <h3>Weather component</h3>
+            <div>
+                <h3>Weather component</h3>
+                <WeatherForm/>
+                <WeatherOutput/>
+            </div>
         );
     }
 });
