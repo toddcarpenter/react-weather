@@ -405,6 +405,10 @@
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
+	process.prependListener = noop;
+	process.prependOnceListener = noop;
+
+	process.listeners = function (name) { return [] }
 
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
@@ -25513,7 +25517,24 @@
 	var Weather = React.createClass({
 	    displayName: 'Weather',
 
+	    // default States
+	    getInitialState: function getInitialState() {
+	        return {
+	            location: 'Miami',
+	            temp: 88
+	        };
+	    },
+	    handleSearch: function handleSearch(location) {
+	        // setSate gets an object of attributes we want to set
+	        this.setState({
+	            location: location,
+	            temp: 23
+	        });
+	    },
 	    render: function render() {
+	        var location = this.state.location;
+	        var temp = this.state.temp;
+
 	        return React.createElement(
 	            'div',
 	            null,
@@ -25522,8 +25543,8 @@
 	                null,
 	                'Weather component'
 	            ),
-	            React.createElement(WeatherForm, null),
-	            React.createElement(WeatherOutput, null)
+	            React.createElement(WeatherForm, { onSearch: this.handleSearch }),
+	            React.createElement(WeatherOutput, { location: location, temp: temp })
 	        );
 	    }
 	});
@@ -25534,25 +25555,39 @@
 /* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(1);
 
 	var WeatherForm = React.createClass({
-	    displayName: "WeatherForm",
+	    displayName: 'WeatherForm',
 
+	    onFormSubmit: function onFormSubmit(e) {
+	        // prevent page from reloading
+	        e.preventDefault();
+
+	        var location = this.refs.location.value;
+
+	        // validate value
+	        if (location.length > 0) {
+	            this.refs.location.value = '';
+
+	            // pass location to parent function
+	            this.props.onSearch(location);
+	        }
+	    },
 	    render: function render() {
 	        return React.createElement(
-	            "div",
+	            'div',
 	            null,
 	            React.createElement(
-	                "form",
-	                null,
-	                React.createElement("input", { type: "text", ref: "city" }),
+	                'form',
+	                { onSubmit: this.onFormSubmit },
+	                React.createElement('input', { type: 'text', ref: 'location' }),
 	                React.createElement(
-	                    "button",
+	                    'button',
 	                    null,
-	                    "Get Weather"
+	                    'Get Weather'
 	                )
 	            )
 	        );
@@ -25573,10 +25608,17 @@
 	    displayName: 'WeatherOutput',
 
 	    render: function render() {
+	        var location = this.props.location;
+	        var temp = this.props.temp;
+
 	        return React.createElement(
 	            'p',
 	            null,
-	            'Weather output'
+	            'It\'s ',
+	            temp,
+	            ' degrees in ',
+	            location,
+	            '.'
 	        );
 	    }
 	});
