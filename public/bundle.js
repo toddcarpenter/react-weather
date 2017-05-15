@@ -405,10 +405,6 @@
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
-	process.prependListener = noop;
-	process.prependOnceListener = noop;
-
-	process.listeners = function (name) { return [] }
 
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
@@ -25646,7 +25642,7 @@
 
 	var axios = __webpack_require__(228);
 
-	var OPEN_WEATHER_MAP_URL = 'http://samples.openweathermap.org/data/2.5/weather?appid=7e5fcd750e155618d14b01489a785640&units=imperial';
+	var OPEN_WEATHER_MAP_URL = 'http://api.openweathermap.org/data/2.5/weather?appid=7e5fcd750e155618d14b01489a785640&units=imperial';
 
 	module.exports = {
 	    getTemp: function getTemp(location) {
