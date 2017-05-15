@@ -2,6 +2,7 @@ var React = require('react');
 
 var WeatherForm = require('WeatherForm');
 var WeatherOutput = require('WeatherOutput');
+var openWeatherApp = require('openWeatherApp');
 
 var Weather = React.createClass({
     // default States
@@ -12,15 +13,22 @@ var Weather = React.createClass({
         }
     },
     handleSearch: function(location) {
-        // setSate gets an object of attributes we want to set
-        this.setState({
-            location: location,
-            temp: 23
-        })
+        // 'this' gets lost if wrapped in a function
+        // referencing it here is aone fix for this
+        var that = this;
+
+        openWeatherApp.getTemp(location).then(function(temp) {
+            that.setState({
+                location: location,
+                temp: temp
+            })
+        }, function(errorMessage) {
+            alert(errorMessage);
+        });
     },
     render: function() {
-        var location = this.state.location;
-        var temp = this.state.temp;
+        // es6 destructuring
+        var {location, temp} = this.state;
 
         return (
             <div>
