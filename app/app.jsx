@@ -7,7 +7,8 @@ var ReactDOM = require('react-dom');
 // this is new ES6 destructuring syntax
 // to create variables from the corresponding properties within react-router
 // aka could do: var Route = require('react-router').Route;
-var {Route, Router, IndexRoute, hashHistory} = require('react-router');
+var { Route, Router, IndexRoute, hashHistory } = require('react-router');
+
 var Main = require('Main');
 var Weather = require('Weather');
 var About = require('About');

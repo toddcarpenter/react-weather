@@ -1,40 +1,53 @@
 var React = require('react');
 
 var WeatherForm = require('WeatherForm');
-var WeatherOutput = require('WeatherOutput');
+var WeatherMessage = require('WeatherMessage');
 var openWeatherApp = require('openWeatherApp');
 
 var Weather = React.createClass({
     // default States
-    getInitialState: function() {
+    getInitialState: function () {
         return {
-            location: 'Miami',
-            temp: 88
+            // location: 'Miami',
+            // temp: 88,
+            isloading: false
         }
     },
-    handleSearch: function(location) {
+    handleSearch: function (location) {
         // 'this' gets lost if wrapped in a function
-        // referencing it here is aone fix for this
+        // referencing it here is way to keep the THIS reference we want
         var that = this;
 
-        openWeatherApp.getTemp(location).then(function(temp) {
+        this.setState({ isloading: true });
+
+        openWeatherApp.getTemp(location).then(function (temp) {
             that.setState({
                 location: location,
-                temp: temp
+                temp: temp,
+                isloading: false
             })
-        }, function(errorMessage) {
+        }, function (errorMessage) {
+            this.setState({ isloading: false });
             alert(errorMessage);
         });
     },
-    render: function() {
+    render: function () {
         // es6 destructuring
-        var {location, temp} = this.state;
+        var { isloading, location, temp } = this.state;
+
+        function renderMessage() {
+            if (isloading) {
+                return <h3>Fetching weather...</h3>
+            } else if(temp && location) {
+                return <WeatherMessage location={ location } temp={ temp }/>
+            }
+    }
 
         return (
             <div>
-                <h3>Weather component</h3>
-                <WeatherForm onSearch={this.handleSearch}/>
-                <WeatherOutput location={location} temp={temp}/>
+            <h3>Weather component</h3>
+            <WeatherForm onSearch={this.handleSearch} />
+            {renderMessage()}
             </div>
         );
     }

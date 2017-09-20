@@ -25508,7 +25508,7 @@
 	var React = __webpack_require__(1);
 
 	var WeatherForm = __webpack_require__(225);
-	var WeatherOutput = __webpack_require__(226);
+	var WeatherMessage = __webpack_require__(226);
 	var openWeatherApp = __webpack_require__(227);
 
 	var Weather = React.createClass({
@@ -25517,30 +25517,48 @@
 	    // default States
 	    getInitialState: function getInitialState() {
 	        return {
-	            location: 'Miami',
-	            temp: 88
+	            // location: 'Miami',
+	            // temp: 88,
+	            isloading: false
 	        };
 	    },
 	    handleSearch: function handleSearch(location) {
 	        // 'this' gets lost if wrapped in a function
-	        // referencing it here is aone fix for this
+	        // referencing it here is way to keep the THIS reference we want
 	        var that = this;
+
+	        this.setState({ isloading: true });
 
 	        openWeatherApp.getTemp(location).then(function (temp) {
 	            that.setState({
 	                location: location,
-	                temp: temp
+	                temp: temp,
+	                isloading: false
 	            });
 	        }, function (errorMessage) {
+	            this.setState({ isloading: false });
 	            alert(errorMessage);
 	        });
 	    },
 	    render: function render() {
 	        // es6 destructuring
 	        var _state = this.state,
+	            isloading = _state.isloading,
 	            location = _state.location,
 	            temp = _state.temp;
 
+
+	        function renderMessage() {
+	            if (isloading) {
+	                return React.createElement(
+	                    'h3',
+	                    null,
+	                    'Fetching weather...'
+	                );
+	            } else if (temp && location) {
+	                return React.createElement(WeatherMessage, { location: location, temp: temp });
+	            }
+	        }
 
 	        return React.createElement(
 	            'div',
@@ -25551,7 +25569,7 @@
 	                'Weather component'
 	            ),
 	            React.createElement(WeatherForm, { onSearch: this.handleSearch }),
-	            React.createElement(WeatherOutput, { location: location, temp: temp })
+	            renderMessage()
 	        );
 	    }
 	});
@@ -25611,8 +25629,8 @@
 
 	var React = __webpack_require__(1);
 
-	var WeatherOutput = React.createClass({
-	    displayName: 'WeatherOutput',
+	var WeatherMessage = React.createClass({
+	    displayName: 'WeatherMessage',
 
 	    render: function render() {
 	        var _props = this.props,
@@ -25632,7 +25650,7 @@
 	    }
 	});
 
-	module.exports = WeatherOutput;
+	module.exports = WeatherMessage;
 
 /***/ }),
 /* 227 */
