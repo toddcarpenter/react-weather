@@ -18,6 +18,8 @@ var Weather = React.createClass({
         // referencing it here is way to keep the THIS reference we want
         var that = this;
 
+        //debugger;
+
         this.setState({ isloading: true });
 
         openWeatherApp.getTemp(location).then(function (temp) {
@@ -41,7 +43,7 @@ var Weather = React.createClass({
             } else if(temp && location) {
                 return <WeatherMessage location={ location } temp={ temp }/>
             }
-    }
+        }
 
         return (
             <div>
