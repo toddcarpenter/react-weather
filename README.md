@@ -20,3 +20,9 @@ pass: normal
 api key: 7e5fcd750e155618d14b01489a785640
 
 Using Axios (installed with NPM) for API call
+
+# Heroku CLI
+Install [Heroku Toolbelt](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
+Under "scripts" in package.json is how we tell Heroku how to start our app "start": "node server.js"
+
+
