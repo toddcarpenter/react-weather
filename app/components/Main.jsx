@@ -19,6 +19,7 @@ var Nav = require('Nav');
 // we can refactor it like so. we don't need to use React.createClass since there's no state
 var Main = (props) => {
     return (
+        // JSX can only return ONE root element
         <div>
             <Nav />
             <h2>Main component</h2>
