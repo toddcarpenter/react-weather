@@ -34,4 +34,5 @@ To view on heroku
 heroku open
 ```
 
-
+# Foundation Docs
+Using the [foundation css framework](https://foundation.zurb.com/sites/docs/)

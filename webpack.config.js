@@ -1,5 +1,24 @@
+var webpack = require('webpack');
+
 module.exports = {
-    entry: './app/app.jsx',
+    entry: [
+        // since these first 2 are not loaded as modules like webpack expects (or understands)
+        // we need to import them with the script! loader module. script-loader in package.json
+        'script!jquery/dist/jquery.min.js',
+        'script!foundation-sites/dist/js/foundation.min.js',
+        './app/app.jsx'
+    ],
+    externals: {
+        jquery: 'jQuery'
+    },
+    plugins: [
+        // this tells webpack to attach the $ and jQuery to jquery
+        // whenever it comes across it in our script/JSX pages
+        new webpack.ProvidePlugin({
+            '$': 'jquery',
+            'jQuery': 'jquery'
+        })
+    ],
     output: {
         path: __dirname,
         filename: './public/bundle.js'

@@ -14,6 +14,13 @@ var Weather = require('Weather');
 var About = require('About');
 var Examples = require('Examples');
 
+// load Foundation
+// require doesn't know how to load in a css files
+// which is why we use the css! loader module. css-loader in package.json
+// the style! loader injects it into the html. style-loader in package.json
+require('style!css!foundation-sites/dist/css/foundation.min.css')
+$(document).foundation(); // this starts foundation
+
 ReactDOM.render(
     <Router history={hashHistory}>
         {/* the "path" prop tells it where the root of the site is
