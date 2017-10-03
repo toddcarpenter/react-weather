@@ -22,8 +22,11 @@ var Main = (props) => {
         // JSX can only return ONE root element
         <div>
             <Nav />
-            <h2>Main component</h2>
-            {props.children}
+            <div className="grid-x grid-padding-x">
+                <div className="cell small-10 small-offset-1 medium-8 medium-offset-2">
+                    {props.children}
+                </div>
+            </div>
         </div>
     )
 };
