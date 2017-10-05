@@ -29,7 +29,7 @@ To push to heroku server
 gut push heroku master
 ```
 
-To view on heroku
+To view on heroku server in browser
 ```
 heroku open
 ```
