@@ -23,14 +23,15 @@ var Weather = React.createClass({
         this.setState({ isloading: true });
 
         openWeatherApp.getTemp(location).then(function (temp) {
+            alert(temp);
             that.setState({
                 location: location,
                 temp: temp,
                 isloading: false
             })
         }, function (errorMessage) {
-            this.setState({ isloading: false });
             alert(errorMessage);
+            that.setState({ isloading: false });
         });
     },
     render: function () {
