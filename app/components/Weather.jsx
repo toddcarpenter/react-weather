@@ -3,13 +3,12 @@ var React = require('react');
 var WeatherForm = require('WeatherForm');
 var WeatherMessage = require('WeatherMessage');
 var openWeatherApp = require('openWeatherApp');
+var ErrorModal = require('ErrorModal');
 
 var Weather = React.createClass({
     // default States
     getInitialState: function () {
         return {
-            // location: 'Miami',
-            // temp: 88,
             isloading: false
         }
     },
@@ -20,23 +19,28 @@ var Weather = React.createClass({
 
         //debugger;
 
-        this.setState({ isloading: true });
+        this.setState({
+            isloading: true,
+            errorMsg: undefined
+        });
 
         openWeatherApp.getTemp(location).then(function (temp) {
-            alert(temp);
             that.setState({
                 location: location,
                 temp: temp,
-                isloading: false
+                isloading: false,
+                errorMsg: undefined
             })
-        }, function (errorMessage) {
-            alert(errorMessage);
-            that.setState({ isloading: false });
+        }, function (e) {
+            that.setState({
+                isloading: false,
+                errorMsg: e.message
+            });
         });
     },
     render: function () {
         // es6 destructuring
-        var { isloading, location, temp } = this.state;
+        var { isloading, location, temp, errorMsg } = this.state;
 
         function renderMessage() {
             if (isloading) {
@@ -46,11 +50,18 @@ var Weather = React.createClass({
             }
         }
 
+        function renderError() {
+            if (typeof errorMsg === "string") {
+                return <ErrorModal title="Title" text={errorMsg} button="Okay"/>
+            }
+        }
+
         return (
             <div className="text-center">
                 <h1>Get Weather</h1>
                 <WeatherForm onSearch={this.handleSearch} />
                 {renderMessage()}
+                {renderError()}
             </div>
         );
     }
