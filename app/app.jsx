@@ -22,7 +22,7 @@ require('style!css!foundation-sites/dist/css/foundation.min.css');
 $(document).foundation(); // this starts foundation
 
 // load app css
-require("style!css!applicationStyles");
+require("style!css!sass!applicationStyles");
 
 ReactDOM.render(
     <Router history={hashHistory}>
