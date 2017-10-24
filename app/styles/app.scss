@@ -10,3 +10,7 @@ $color-header: #555;
 input[type=search] {
   box-shadow: none;
 }
+
+.top-bar input[type=search] {
+  margin: 0 1.4rem;
+}

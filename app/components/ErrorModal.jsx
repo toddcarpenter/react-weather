@@ -1,4 +1,6 @@
 var React = require('react');
+var reactDOM = require('react-dom');
+var reactDOMServer = require('react-dom/server');
 
 var ErrorModal = React.createClass({
   getDefaultProps: function() {
@@ -14,12 +16,12 @@ var ErrorModal = React.createClass({
     button: React.PropTypes.string
   },
   componentDidMount: function () {
-    var modal = new Foundation.Reveal($('#error-modal'));
-    modal.open();
-  },
-  render: function () {
+    // React doesn't play well with 3rd party libraries that update the DOM
+    // Had to move this out of the render method because Foundation is removing the
+    // modal from the DOM. React deosn't like this and it's cauing an error
     var { title, text, button } = this.props;
-    return (
+
+    var modalMarkup = (
       <div className="reveal tiny text-center" id="error-modal" data-reveal="">
         <h4>{title}</h4>
         <p>{text}</p>
@@ -27,6 +29,18 @@ var ErrorModal = React.createClass({
           {button}
         </div>
       </div>
+    );
+
+    var $modal = $(reactDOMServer.renderToString(modalMarkup));
+    $(reactDOM.findDOMNode(this)).html($modal);
+
+    var modal = new Foundation.Reveal($('#error-modal'));
+    modal.open();
+  },
+  render: function () {
+    return (
+      <div>
+        </div>
     )
   }
 });
