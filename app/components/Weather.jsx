@@ -21,7 +21,11 @@ var Weather = React.createClass({
 
         this.setState({
             isloading: true,
-            errorMsg: undefined
+            errorMsg: undefined,
+
+            // clear these so it doens't keep old location & temp if there's an error below
+            location: undefined,
+            temp: undefined
         });
 
         openWeatherApp.getTemp(location).then(function (temp) {
@@ -37,6 +41,27 @@ var Weather = React.createClass({
                 errorMsg: e.message
             });
         });
+    },
+    componentDidMount: function () {
+        var location = this.props.location.query.location;
+
+        if (location && location.length > 0) {
+            this.handleSearch(location);
+
+            // remove location query tring
+            window.location.hash = "#/";
+        }
+    },
+    // this gets called every time the components props get updated
+    componentWillReceiveProps: function (newProps) {
+        var location = newProps.location.query.location;
+
+        if (location && location.length > 0) {
+          this.handleSearch(location);
+
+          // remove location query tring
+          window.location.hash = "#/";
+        }
     },
     render: function () {
         // es6 destructuring
